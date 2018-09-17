@@ -8,6 +8,8 @@ a, body {color:white;}
 td > a {color: #1873cf;}
 a {text-decoration: none}
 
+.hidden {display: none}
+
 [data-table][data-loading='1'] {opacity: 0.5; pointer-events:none;}
 [data-table] .empty {display: none;}
 [data-table][data-empty='1'] .empty {display: block;}

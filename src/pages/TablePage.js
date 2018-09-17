@@ -23,7 +23,7 @@ class Users extends Component {
 
     this.state = {
       params:
-        { ...queryString.parse(this.props.location.search), page: 1 } || {},
+        { ...queryString.parse(this.props.location.search) } || {},
       data: { loading: true },
       nextPage: false,
       previousPage: false,
@@ -91,7 +91,9 @@ class Users extends Component {
     if (!this.props.location.search) {
       urlQueryParams = JSON.stringify({token: this.props.token});
     } else {
-      urlQueryParams = JSON.stringify({...this.state.params, token: this.props.token});
+      const queryWithoutPage = {...this.state.params};
+      delete queryWithoutPage.page;
+      urlQueryParams = JSON.stringify({page: this.state.params.page, filter: {...queryWithoutPage}, token: this.props.token});
     }
     console.log('TOKEN', this.props.token);
     fetch(`http://localhost:8080/api/admin/${this.props.link}`, {
@@ -116,6 +118,8 @@ class Users extends Component {
   }, 100);
 
   updateURLqueryParams(params) {
+    // console.log('CO JEST KURWA CHUJU', params)
+
     let oldParams = queryString.parse(this.props.location.search);
     let newParams = { ...oldParams, ...params };
 
@@ -132,8 +136,9 @@ class Users extends Component {
     });
   }
 
+
   onChangeInput = async e => {
-    // console.log("onchange", e.target.name);
+    // console.log("onchange", e.target.name)
     this.setState({
       params: {
         ...this.state.params,

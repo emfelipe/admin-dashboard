@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 // import { TransitionGroup, CSSTransition } from 'react-transition-group'
-import { format, subHours } from "date-fns";
+import CONFIG from './config'
 
 import Menu from "./components/Menu";
 
@@ -10,8 +10,7 @@ import Statistics from "./pages/Statistics";
 import columnsUsers from "./pages/columnsUsers";
 import columnsPayments from "./pages/columnsPayments";
 
-const today = format(subHours(new Date(), 2), "YYYY-MM-DD");
-const token = `dPofjqpuZQqtCvibUbEcYWtErdfKfazFCwQUPMrWY6tgRBxkfXgcmdDmCQHtnNxX${today}`;
+const token = CONFIG.TOKEN;
 
 export default class App extends Component {
   render() {
