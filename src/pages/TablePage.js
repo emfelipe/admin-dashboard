@@ -153,11 +153,6 @@ class Users extends Component {
 
   render() {
     // console.log("PARAMS", this.columns);
-    if(this.state.count === 0){
-      return (
-        <div>No data</div>
-      )
-    }
     return (
       <div className={this.state.loading ? "s loading" : "s"}>
         <div>
