@@ -93,6 +93,7 @@ class Users extends Component {
     } else {
       urlQueryParams = JSON.stringify({...this.state.params, token: this.props.token});
     }
+    console.log('TOKEN', this.props.token);
     fetch(`http://localhost:8080/api/admin/${this.props.link}`, {
       method: "POST",
       headers: {
@@ -152,6 +153,11 @@ class Users extends Component {
 
   render() {
     // console.log("PARAMS", this.columns);
+    if(this.state.count === 0){
+      return (
+        <div>No data</div>
+      )
+    }
     return (
       <div className={this.state.loading ? "s loading" : "s"}>
         <div>
