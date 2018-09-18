@@ -10,14 +10,14 @@ class TableFilter extends Component {
             <input
               type="date"
               key={'start'}
-              name={`${this.props.name}start`}
+              name={`${this.props.name}Start`}
               value={this.props.value.start}
               onChange={this.props.onChangeFunction}
             />
             <input
               type="date"
               key={'end'}
-              name={`${this.props.name}end`}
+              name={`${this.props.name}End`}
               value={this.props.value.end}
               onChange={this.props.onChangeFunction}
             />

@@ -3,6 +3,39 @@ import queryString from "query-string";
 import TableFilter from "../components/TableFilter";
 import Rows from "../components/Rows";
 
+function convertParams(params) {
+  let newParams = { ...params }
+    for (let key in params) {
+      const value = params[key]
+
+      if (!params.hasOwnProperty(key)) continue
+      const startIndex = key.indexOf('Start')
+      if (startIndex > 0 && startIndex + 5 === key.length) {
+        const inputName = key.slice(0, key.indexOf('Start'))
+        const endKey = `${inputName}End`
+        
+        if (params.hasOwnProperty(endKey)) {
+          const endValue = params[endKey]
+          newParams[inputName] = [value, endValue]
+          delete newParams[endKey]
+          delete newParams[key]
+        } else {
+          newParams[inputName] = [value]
+          delete newParams[key]
+        }
+      } else {
+        const endIndex = key.indexOf('End')
+        if (endIndex > 0) {
+          const inputName = key.slice(0, key.indexOf('End'))
+          newParams[inputName] = [undefined, value]
+          delete newParams[key]
+        }
+      }
+  }
+
+  return newParams
+}
+
 function debounce(a, b, c) {
   var d, e;
   return function() {
@@ -83,7 +116,7 @@ class Users extends Component {
   };
 
   fetchPage = debounce(() => {
-    console.log("FETCH PARAMS", this.state.params);
+    // console.log("FETCH PARAMS", this.state.params);
     this.setState({
       loading: true
     });
@@ -91,11 +124,15 @@ class Users extends Component {
     if (!this.props.location.search) {
       urlQueryParams = JSON.stringify({token: this.props.token});
     } else {
-      const queryWithoutPage = {...this.state.params};
+      let queryWithoutPage = {...this.state.params};
+      // console.log('BEFORE', queryWithoutPage);
       delete queryWithoutPage.page;
-      urlQueryParams = JSON.stringify({page: this.state.params.page, filter: {...queryWithoutPage}, token: this.props.token});
+      const convertedParams = convertParams(queryWithoutPage);
+      // console.log('AFTER', convertedParams);
+      urlQueryParams = JSON.stringify({page: this.state.params.page, filter: {...convertedParams}, token: this.props.token});
+      console.log('PARAMS', {page: this.state.params.page, filter: {...convertedParams}, token: this.props.token})
     }
-    console.log('TOKEN', this.props.token);
+    // console.log('TOKEN', this.props.token);
     fetch(`http://localhost:8080/api/admin/${this.props.link}`, {
       method: "POST",
       headers: {
@@ -105,6 +142,9 @@ class Users extends Component {
       body: urlQueryParams
     })
       .then(response => response.json())
+      // .then(data => {
+      //   console.log('DATA', data);
+      // })
       .then(data =>
         this.setState({
           data: data.data.rows,
@@ -114,7 +154,7 @@ class Users extends Component {
           count: data.data.count
         })
       );
-    // console.log(this.state.data);
+    // console.log('STATE', this.state);
   }, 100);
 
   updateURLqueryParams(params) {
@@ -182,11 +222,11 @@ class Users extends Component {
                           : {
                               start:
                                 this.state.params[
-                                  `${this.columns[i].ref}start`
+                                  `${this.columns[i].ref}Start`
                                 ] || "",
                               end:
                                 this.state.params[
-                                  `${this.columns[i].ref}end`
+                                  `${this.columns[i].ref}End`
                                 ] || ""
                             }
                       }
