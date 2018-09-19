@@ -1,3 +1,5 @@
+import React from "react";
+
 const columnsPayments = [
   {
     header: "ID",
@@ -8,10 +10,10 @@ const columnsPayments = [
     header: "User mail",
     ref: "userMail",
     type: "text",
+    className: "disabled",
     format: row => {
-      return row.user.mail;
+      return <a href={`./users?mail=${row.user.mail}`}>{row.user.mail}</a>;
     },
-    className: "disabled"
   },
   {
     header: "Price",

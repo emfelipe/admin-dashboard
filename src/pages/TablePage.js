@@ -145,10 +145,10 @@ class Users extends Component {
       body: urlQueryParams
     })
       .then(response => response.json())
-      .then(data => {
-        console.log('DATA', data);
-        return data;
-      })
+      // .then(data => {
+      //   console.log('DATA', data);
+      //   return data;
+      // })
       .then(data =>
         this.setState({
           data: data.data.rows,

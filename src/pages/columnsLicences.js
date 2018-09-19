@@ -13,7 +13,7 @@ const columnsLicences = [
     ref: "userMail",
     type: "text",
     format: row => {
-      return row.user.mail;
+      return <a href={`./users?mail=${row.user.mail}`}>{row.user.mail}</a>;
     },
     className: "disabled"
   },
@@ -30,7 +30,7 @@ const columnsLicences = [
     ref: "edit",
     type: "-",
     format: row => {
-      return <ManageLicence />;
+      return <ManageLicence key={row.id} id={row.id} />;
     }
   }
 ];

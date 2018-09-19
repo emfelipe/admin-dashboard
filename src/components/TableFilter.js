@@ -2,7 +2,6 @@ import React, { Component } from "react";
 
 class TableFilter extends Component {
   render() {
-    console.log("disabled?", this.props.className);
     switch (this.props.type) {
       case "dateRange":
         // console.log('VALUE?', this.props.value);
