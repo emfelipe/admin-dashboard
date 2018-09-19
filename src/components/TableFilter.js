@@ -2,24 +2,27 @@ import React, { Component } from "react";
 
 class TableFilter extends Component {
   render() {
+    console.log("disabled?", this.props.className);
     switch (this.props.type) {
       case "dateRange":
-      // console.log('VALUE?', this.props.value);
+        // console.log('VALUE?', this.props.value);
         return (
           <React.Fragment>
             <input
               type="date"
-              key={'start'}
+              key={"start"}
               name={`${this.props.name}Start`}
               value={this.props.value.start}
               onChange={this.props.onChangeFunction}
+              className={this.props.className}
             />
             <input
               type="date"
-              key={'end'}
+              key={"end"}
               name={`${this.props.name}End`}
               value={this.props.value.end}
               onChange={this.props.onChangeFunction}
+              className={this.props.className}
             />
           </React.Fragment>
         );
@@ -30,6 +33,7 @@ class TableFilter extends Component {
             name={this.props.name}
             value={this.props.value}
             onChange={this.props.onChangeFunction}
+            className={this.props.className}
           />
         );
       case "select":
@@ -52,12 +56,13 @@ class TableFilter extends Component {
             onChange={this.props.onChangeFunction}
             name={this.props.name}
             value={this.props.value}
+            className={this.props.className}
           >
             {options}
           </select>
         );
       default:
-        return <span>Nothing here</span>;
+        return <span>-</span>;
     }
   }
 }

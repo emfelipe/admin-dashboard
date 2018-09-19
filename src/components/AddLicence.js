@@ -6,7 +6,7 @@ class addLicence extends Component {
     super(props);
 
     this.state = {
-      value: "Add",
+      value: <b className="tableButton">Add licence</b>,
       hideDatePicker: true,
       hideConfirmButton: true,
       hideCancelButton: true,
@@ -49,7 +49,7 @@ class addLicence extends Component {
 
   cancelButton() {
     this.setState({
-      value: "Add",
+      value: <b className="tableButton">Add licence</b>,
       hideDatePicker: true,
       hideConfirmButton: true,
       hideCancelButton: true,

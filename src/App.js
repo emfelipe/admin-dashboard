@@ -8,6 +8,7 @@ import Menu from "./components/Menu";
 import TablePage from "./pages/TablePage";
 import Statistics from "./pages/Statistics";
 import columnsUsers from "./pages/columnsUsers";
+import columnsLicences from "./pages/columnsLicences";
 import columnsPayments from "./pages/columnsPayments";
 
 const token = CONFIG.TOKEN;
@@ -26,7 +27,7 @@ export default class App extends Component {
                 <Switch location={location}>
                   <Route exact path="/" render={() => <Statistics />} />
                   <Route
-                    path="/users"
+                    exact path="/users"
                     render={props => (
                       <TablePage
                         {...props}
@@ -39,7 +40,7 @@ export default class App extends Component {
                     )}
                   />
                   <Route
-                    path="/payments"
+                    exact path="/payments"
                     render={props => (
                       <TablePage
                         {...props}
@@ -52,14 +53,14 @@ export default class App extends Component {
                     )}
                   />
                   <Route
-                    path="/licences"
+                    exact path="/licences"
                     render={props => (
                       <TablePage
                         {...props}
-                        key={2}
-                        title="Licenes"
-                        columns={columnsPayments}
-                        link="payments/list"
+                        key={3}
+                        title="Licences"
+                        columns={columnsLicences}
+                        link="licences/list"
                         token={token}
                       />
                     )}

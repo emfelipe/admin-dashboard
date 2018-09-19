@@ -3,11 +3,15 @@ import queryString from "query-string";
 import TableFilter from "../components/TableFilter";
 import Rows from "../components/Rows";
 
+import CONFIG from "../config"
+
 function convertParams(params) {
   let newParams = { ...params }
     for (let key in params) {
-      const value = params[key]
-
+      let value = params[key]
+      // if(value === ''){
+      //   value = undefined;
+      // }
       if (!params.hasOwnProperty(key)) continue
       const startIndex = key.indexOf('Start')
       if (startIndex > 0 && startIndex + 5 === key.length) {
@@ -16,24 +20,23 @@ function convertParams(params) {
         
         if (params.hasOwnProperty(endKey)) {
           const endValue = params[endKey]
-          newParams[inputName] = [value, endValue]
+          newParams[inputName] = {between: [value, endValue]}
           delete newParams[endKey]
           delete newParams[key]
         } else {
-          newParams[inputName] = [value]
+          newParams[inputName] = {between: [value, undefined]}
           delete newParams[key]
         }
       } else {
         const endIndex = key.indexOf('End')
         if (endIndex > 0) {
           const inputName = key.slice(0, key.indexOf('End'))
-          newParams[inputName] = [undefined, value]
+          newParams[inputName] = {between: [undefined, value]}
           delete newParams[key]
         }
       }
   }
-
-  return newParams
+  return newParams;
 }
 
 function debounce(a, b, c) {
@@ -130,10 +133,10 @@ class Users extends Component {
       const convertedParams = convertParams(queryWithoutPage);
       // console.log('AFTER', convertedParams);
       urlQueryParams = JSON.stringify({page: this.state.params.page, filter: {...convertedParams}, token: this.props.token});
-      console.log('PARAMS', {page: this.state.params.page, filter: {...convertedParams}, token: this.props.token})
+      // console.log('PARAMS', {page: this.state.params.page, filter: {...convertedParams}, token: this.props.token})
     }
     // console.log('TOKEN', this.props.token);
-    fetch(`http://localhost:8080/api/admin/${this.props.link}`, {
+    fetch(`${CONFIG.ORIGIN}api/admin/${this.props.link}`, {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -142,9 +145,10 @@ class Users extends Component {
       body: urlQueryParams
     })
       .then(response => response.json())
-      // .then(data => {
-      //   console.log('DATA', data);
-      // })
+      .then(data => {
+        console.log('DATA', data);
+        return data;
+      })
       .then(data =>
         this.setState({
           data: data.data.rows,
@@ -179,13 +183,25 @@ class Users extends Component {
 
   onChangeInput = async e => {
     // console.log("onchange", e.target.name)
-    this.setState({
-      params: {
-        ...this.state.params,
-        page: 1,
-        [e.target.name]: e.target.value
-      }
-    });
+    if(e.target.value === ''){
+      let newParams = {...this.state.params};
+      delete newParams[e.target.name];
+      this.setState({
+        params: {
+          ...newParams,
+          page: 1
+        }
+      });
+    } else {
+      this.setState({
+        params: {
+          ...this.state.params,
+          page: 1,
+          [e.target.name]: e.target.value
+        }
+      });
+    }
+    
     await this.updateURLqueryParams({
       [e.target.name]: e.target.value,
       page: 1
@@ -232,6 +248,7 @@ class Users extends Component {
                       }
                       onChangeFunction={this.onChangeInput}
                       selectFields={this.columns[i].selectFields || null}
+                      className={this.columns[i].className || null}
                     />
                   </th>
                 ))}

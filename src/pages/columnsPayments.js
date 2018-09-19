@@ -1,4 +1,4 @@
-const columnsUsers = [
+const columnsPayments = [
   {
     header: "ID",
     ref: "id",
@@ -10,7 +10,8 @@ const columnsUsers = [
     type: "text",
     format: row => {
       return row.user.mail;
-    }
+    },
+    className: "disabled"
   },
   {
     header: "Price",
@@ -47,8 +48,9 @@ const columnsUsers = [
     format: row => {
       return row.paymentMethod.name;
     },
-    selectFields: ["paypal", "bankTransfer", "paysafecard", "creditCard"]
-  }
+    selectFields: ["paypal", "bankTransfer", "paysafecard", "creditCard"],
+    className: "disabled"
+  },
 ];
 
-export default columnsUsers;
+export default columnsPayments;

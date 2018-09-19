@@ -1,6 +1,6 @@
-import React from 'react';
+import React from "react";
 // import { addLicence } from '../assets/licenceManagement'
-import AddLicence from '../components/AddLicence'
+import AddLicence from "../components/AddLicence";
 
 const columnsUsers = [
   {
@@ -26,16 +26,17 @@ const columnsUsers = [
     ref: "licences",
     format: row => {
       if (row.licences.length === 0) {
-        return <AddLicence key={row.id} id={row.id}/>
+        return <AddLicence key={row.id} id={row.id} />;
       }
-      return row.licences
+      return <a href={`./licences?id=${row.licences[row.licences.length-1].id}`}>{row.licences
         .reduce((current, x) => {
           let expiresAt = new Date(x.expiresAt);
           return expiresAt > current ? expiresAt : current;
         }, new Date(0))
-        .toLocaleString();
+        .toLocaleString()}</a>;
     },
-    type: "dateRange"
+    type: "dateRange",
+    className: "disabled"
   },
   {
     header: "Register source",
